@@ -32,4 +32,9 @@ public:
 public:
 	void Trace();
 	void TraceInteractionArea(bool trace);
+	UFUNCTION(BlueprintCallable) void TryToInteract(bool interacted);
+	UFUNCTION(Server, Reliable) void InteractOnServer(AInteractionArea*  interactionArea);
+	
+private:
+	float _interactionDuration;
 };

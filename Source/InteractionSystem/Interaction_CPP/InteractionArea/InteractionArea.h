@@ -27,4 +27,8 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	
 	void ToggleFocus(bool focused);
+	float GetInteractionDuration() {return interactionDuration; };
+	
+private:
+	UPROPERTY(EditAnywhere) float interactionDuration;
 };

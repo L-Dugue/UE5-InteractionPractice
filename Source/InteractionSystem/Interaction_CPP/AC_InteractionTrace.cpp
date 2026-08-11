@@ -2,6 +2,8 @@
 
 
 #include "AC_InteractionTrace.h"
+
+#include "InteractionInterfaces/Interactable.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values for this component's properties
@@ -44,9 +46,6 @@ void UAC_InteractionTrace::Trace()
 	
 	// Calculations needed for endPos
 	endPos = (endPos * 500) + startPos;
-	
-	
-	DrawDebugLine(GetWorld(), startPos, endPos, FColor::Red, false, 1.0f, 0, 0.5);
 	
 	// Collision Logic
 	if (GetWorld()->LineTraceSingleByChannel(hitResult, startPos, endPos, ECC_Visibility, TraceParams))
@@ -91,4 +90,33 @@ void UAC_InteractionTrace::TraceInteractionArea(bool trace)
 		}
 	}
 }
+
+void UAC_InteractionTrace::TryToInteract(bool interacted)
+{
+	if (interacted)
+	{
+		
+		if (isTracingInteractionArea)
+		{
+			_interactionDuration = focusedInteractionArea->GetInteractionDuration();
+		
+			if (_interactionDuration > 0.0f)
+			{
+				// Open Over time
+			}
+			else
+			{
+				InteractOnServer(focusedInteractionArea);
+			}
+		}
+	}
+	
+}
+
+void UAC_InteractionTrace::InteractOnServer_Implementation(AInteractionArea* interactionArea)
+{
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("Interacted!"));
+	IInteractable::Execute_Interact(interactionArea->GetParentActor());
+}
+
 
